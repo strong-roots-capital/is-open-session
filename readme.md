@@ -12,13 +12,13 @@ npm install @strong-roots-capital/is-open-session
 
 ``` typescript
 import isOpenSession from '@strong-roots-capital/is-open-session'
-// TODO: describe usage
+isOpenSession(new Date(), '4H')
+// => true
+
+isOpenSession(new Date(0), '4H')
+// => false
 ```
 
 ## Related
 
-TODO
-
-## Acknowledgments
-
-TODO
+- [is-tradingview-format](https://github.com/strong-roots-capital/is-tradingview-format)
