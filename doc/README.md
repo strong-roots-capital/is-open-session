@@ -46,7 +46,7 @@ Related
 
 ▸ **isOpenSession**(date: *`Date`*, timeframe: *`string`*, now?: *`Date`*): `boolean`
 
-*Defined in [is-open-session.ts:22](https://github.com/strong-roots-capital/is-open-session/blob/66c9719/src/is-open-session.ts#L22)*
+*Defined in [is-open-session.ts:22](https://github.com/strong-roots-capital/is-open-session/blob/48e183d/src/is-open-session.ts#L22)*
 
 Test to determine if a date falls inside the most-recent (currently-open) session.
 
