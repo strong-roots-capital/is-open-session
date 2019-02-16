@@ -24,16 +24,16 @@ const rejectsInvalidTradingviewFormats = (t: any, timeframe: string) => {
 rejectsInvalidTradingviewFormats.title = (_ = '', timeframe: string) => `should reject timeframe as invalid Trading View format: ${timeframe}`
 
 const isInOpenSession = (t: any, date: Date, timeframe: string, from: Date = utcDate()) => t.true(isOpenSession(date, timeframe, from))
-isInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should be considered inside most-recent ${timeframe} session from ${from.toISOString()}`
+isInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should be considered inside most-recent ${timeframe} session from ${from.toISOString()} (isInOpenSession)`
 
 const isNotInOpenSession = (t: any, date: Date, timeframe: string, from: Date = utcDate()) => t.false(isOpenSession(date, timeframe, from))
-isNotInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should not be considered inside most-recent ${timeframe} session from ${from.toISOString()}`
+isNotInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should not be considered inside most-recent ${timeframe} session from ${from.toISOString()} (isNotInOpenSession)`
 
 const equalToSessionOpenCountsAsInOpenSession = (t: any, date: Date, timeframe: string, from: Date = utcDate()) => t.true(isOpenSession(date, timeframe, from))
-equalToSessionOpenCountsAsInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should be considered inside most-recent ${timeframe} session from ${from.toISOString()}`
+equalToSessionOpenCountsAsInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should be considered inside most-recent ${timeframe} session from ${from.toISOString()} (equalToSessionOpenCountsAsInOpenSession)`
 
 const equalToSessionCloseDoesNotCountAsInOpenSession = (t: any, date: Date, timeframe: string, from: Date = utcDate()) => t.false(isOpenSession(date, timeframe, from))
-equalToSessionCloseDoesNotCountAsInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should not be considered inside most-recent ${timeframe} session from ${from.toISOString()}`
+equalToSessionCloseDoesNotCountAsInOpenSession.title = (_ = '', date: Date, timeframe: string, from: Date = utcDate()) => `${date.toISOString()} should not be considered inside most-recent ${timeframe} session from ${from.toISOString()} (equalToSessionCloseDoesNotCountAsInOpenSession)`
 
 
 /*********************************************************************
@@ -44,12 +44,22 @@ const invalidTimeframes = [ 'Y', '!!', '.', 'bumble', '~<>', 'happy', 'valentine
 invalidTimeframes.forEach((timeframe: string) => test(rejectsInvalidTradingviewFormats, timeframe))
 
 for (const timeframe of listTradingviewFormats()) {
-    const recentSessions = getRecentSessions(timeframe)
-    const openSession = new Date(recentSessions.pop()!)
-    const closedSession = new Date(recentSessions.pop()!)
-    test(isInOpenSession, openSession, timeframe)
-    test(isNotInOpenSession, closedSession, timeframe)
-    test(isNotInOpenSession, new Date(0), timeframe)
+    const now = utcDate()
+    const recentSessions = getRecentSessions(timeframe, now)
+    const [openSession, ..._] = recentSessions.reverse()
+    test(isInOpenSession, new Date(openSession), timeframe, now)
+}
+
+for (const timeframe of listTradingviewFormats()) {
+    const now = utcDate()
+    const recentSessions = getRecentSessions(timeframe, now)
+    const [openSession, closedSession, ..._] = recentSessions.reverse()
+    test(isNotInOpenSession, new Date(closedSession), timeframe, now)
+}
+
+for (const timeframe of listTradingviewFormats()) {
+    const now = utcDate()
+    test(isNotInOpenSession, new Date(0), timeframe, now)
 }
 
 for (const timeframe of listTradingviewFormats()) {

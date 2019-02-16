@@ -16,8 +16,8 @@ import { inTradingviewFormat } from '@strong-roots-capital/is-tradingview-format
  *
  * @param date - Date under test
  * @param timeframe - Length of session in Trading View format
- * @param now - Used as current time when calculating most-recent timeframe
- * @returns True if `date` is inside the most-recent `timeframe` session from `now`.
+ * @param now - Used as current time when calculating most-recent session
+ * @returns True if `date` is inside the most-recent `timeframe` session from `now`
  */
 export default function isOpenSession(date: Date, timeframe: string, now: Date = utcDate()): boolean {
 
