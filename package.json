@@ -1,6 +1,6 @@
 {
   "name": "@strong-roots-capital/is-open-session",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Test to determine if a date falls inside a currently-open timeframe",
   "main": "dist/is-open-session.js",
   "types": "dist/is-open-session.d.ts",
